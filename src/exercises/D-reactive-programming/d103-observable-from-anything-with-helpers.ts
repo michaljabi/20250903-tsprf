@@ -48,7 +48,8 @@ fruit$.subscribe({
   },
 });
 
-const second$ = interval(500);
+const second$ = interval(2000);
+const onlyFiveSecond$ = second$.pipe(take(5));
 
 // Consumer 1:
 second$.subscribe({
@@ -61,12 +62,19 @@ second$.subscribe({
 });
 
 // Consumer 2:
-second$.pipe(take(5)).subscribe({
+onlyFiveSecond$.subscribe({
   next: (value) => {
     console.log(value);
   },
   complete: () => {
     console.log("Completed!");
+  },
+});
+
+// Consumer 3:
+onlyFiveSecond$.subscribe({
+  next: (value) => {
+    console.log(value);
   },
 });
 

@@ -21,7 +21,9 @@
 // Z back-endu przychodzą do nas dane w postaci tablicy stringów:
 const backendApiRequest = (): (string | null)[] => [
   "marian",
+  "michał",
   "stefan",
+  null,
   "jadwiga",
   "henryka",
   "anna",
@@ -83,5 +85,12 @@ console.log(upperNames);
 console.log(response);
 // część 2:
 console.log(upperNames.map(padWithDots).join("\n"));
+
+
+for(const myName of upperNames) {
+  console.log(myName)
+}
+
+console.log(response);
 
 export {};
