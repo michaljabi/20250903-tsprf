@@ -1,4 +1,4 @@
-import { interval } from 'rxjs'
+import { interval } from "rxjs";
 
 /**
   #Zadanie:
@@ -10,11 +10,17 @@ import { interval } from 'rxjs'
   Tutaj również nie możemy dopuścić do "memory leak'ów"
 */
 
+// PROVIDER:
 const number$ = interval(1000);
 
-number$.subscribe((no) => {
-  console.log('My number is', no)
+
+// CONSUMER:
+const sub = number$.subscribe((no) => {
+  console.log("My number is", no);
 });
 
+setTimeout(() => {
+  sub.unsubscribe();
+}, 3000);
 
-export {}
+export {};
