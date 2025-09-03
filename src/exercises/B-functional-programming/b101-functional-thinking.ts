@@ -61,8 +61,13 @@ export const capitalize = (word: string): string =>
   word.charAt(0).toUpperCase() + word.slice(1);
 
 // type predicate:
-const isString = (sth: unknown): sth is string => typeof sth === "string";
+const isString = (sth: unknown): sth is string => typeof sth === "string"; // (function expression)
 const padWithDots = (name: string) => name.padStart(20, ".");
+
+// function declaration:
+function isString2 (sth: unknown): sth is string {
+   return typeof sth === "string";
+}
 
 isString('') //=
 isString(23) //=
