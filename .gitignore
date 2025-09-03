@@ -1,0 +1,7 @@
+.idea
+.cache
+.parcel-cache
+tsc-compiled
+dist
+node_modules
+*.pdf

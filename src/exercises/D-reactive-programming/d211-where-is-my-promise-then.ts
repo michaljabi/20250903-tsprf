@@ -1,0 +1,43 @@
+import { button, li, ul } from '../../dom-api/make-dom'
+import { $ } from '../../dom-api/selector'
+import { ajax } from 'rxjs/ajax'
+
+/**
+ #Zadanie:
+ Po kliknięciu w przycisk załaduj listę użytkowników ze źródła on-line.
+ Po czym poczekaj jedną sekundę aby później pokazać wynik na DOM.
+ Cała akcja ma 3 kroki (click - ajax - render after 1 sec)
+
+ link do API z listą użytkowników: https://jsonplaceholder.typicode.com/users
+
+ #Cel:
+ Czasami potrzebujemy od Observable podobnej funkcjonalności jak w przypadku Promise.
+ "Przyjdź z wynikiem, i wykonaj kolejną operację asynchroniczną" - jak w praktyce to osiągnąć?
+ W mechanizmie promise mamy .then() i kolejną Promise, jak podobną funkcjonalność osiągnąć w Observable?
+
+ Poznanie wywołań ajax przez observable, unikanie zagnieżdżeń subskrypcji.
+ Operatory: switchMap, map, from - utrwalenie
+ */
+interface AjaxUser {
+    name: string;
+    email: string;
+}
+
+// Pomocnicze wrapper'y DOM:
+const loadUsersBtn = button('Załaduj użytkowników', ['btn','btn-primary']);
+const myUlList = ul([ ], ['list-group', 'text-dark']);
+const mapUserToLi = (user: AjaxUser) => li(`${user.name} (${user.email})`);
+
+
+// Rozwiązanie:
+
+
+// HTML Boilerplate:
+const buttonWrapperDOM = $('#buttonWrapper') as HTMLDivElement;
+const usersWrapperDOM = $('#usersWrapper') as HTMLDivElement;
+
+buttonWrapperDOM.appendChild(loadUsersBtn)
+usersWrapperDOM.appendChild(myUlList)
+
+
+export {}
