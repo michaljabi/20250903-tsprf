@@ -53,13 +53,30 @@ for (const name of response) {
 console.log(result);
 
 // sposób 2: (deklaratywny) [podejście funkcyjne]
+// PURE FUNCTIONS:
+// 1. single resposibility
+// 2. NO side effects
+// 3. same input -> same output
+export const capitalize = (word: string): string =>
+  word.charAt(0).toUpperCase() + word.slice(1);
 
-const upperNames = response
-  .filter((w) => typeof w === "string")
-  .map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+// type predicate:
+const isString = (sth: unknown): sth is string => typeof sth === "string";
+const padWithDots = (name: string) => name.padStart(20, ".");
+
+isString('') //=
+isString(23) //=
+isString(true) //=
+isString(() => {}) //=
+
+// ---
+capitalize('krysia'); //=
+capitalize('marek'); //=
+
+const upperNames = response.filter(isString).map(capitalize);
 console.log(upperNames);
 console.log(response);
 // część 2:
-console.log(upperNames.map((name) => name.padStart(20, ".")).join("\n"));
+console.log(upperNames.map(padWithDots).join("\n"));
 
 export {};
