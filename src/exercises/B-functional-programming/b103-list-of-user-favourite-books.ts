@@ -1,3 +1,7 @@
+import { from } from "rxjs";
+
+import { mergeMap, map } from "rxjs/operators";
+
 /**
  #Zadanie:
  Pokaż tablicę Array<string> zawierającą jedynie cytaty,
@@ -54,10 +58,30 @@ const api = {
 
 // Rozwiązanie:
 // const quotes = api.users.map(u => u.books).flat();
-const quotes = api.users.flatMap((u) => u.books).map(b => b.quote);
+const quotes = api.users.flatMap((u) => u.books).map((b) => b.quote);
 
 console.log(quotes);
 
 // 2. po rozwiązaniu funkcyjnym 🙋 -> i spróbuj zrobić z tego strumień + operatory w .pipe()
+
+const quote$ = from(api.users).pipe(
+  mergeMap((u) => u.books),
+  map((b) => b.quote)
+);
+
+// quote$.subscribe((u) => {
+//   console.log(u);
+//   const quotes: any[] = [];
+//   const sub =from(u.books).subscribe((b) => {
+//     console.log(b.quote);
+//     quotes.push(b.quote);
+//   });
+
+//   console.log(quotes.flat());
+// });
+
+quote$.subscribe((quote) => {
+  console.log(quote);
+});
 
 export {};
