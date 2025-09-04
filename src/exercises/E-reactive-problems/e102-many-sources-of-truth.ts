@@ -1,19 +1,26 @@
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject } from "rxjs";
 
 class SimpleService {
+  private number$: BehaviorSubject<number>;
 
-    number$: BehaviorSubject<number>;
+  // spoiler o co chodzi przed rozwiązaniem e102.
+  // dla przykładu Array
+  private  myData: number[] = [];
 
-    constructor () {
-        this.number$ = new BehaviorSubject(1);
-        setTimeout(() => {
-            this.number$.next(1000);
-        }, 2000);
-    }
+  constructor() {
+    this.number$ = new BehaviorSubject(1);
+    setTimeout(() => {
+      this.number$.next(1000);
+    }, 2000);
+  }
 
-    getNumbers() {
-        return this.number$;
-    }
+  getNumbers() {
+    return this.number$;
+  }
+
+  getData(): readonly number[] {
+    return this.myData;
+  }
 }
 
 /**
@@ -31,27 +38,27 @@ class SimpleService {
 
 const serviceInstance = new SimpleService();
 
+// od teraz TS zabrał wszyskie metody mutujące w tym co wystawia w getData()
+// serviceInstance.getData().push(2);
+
 // #1 Subscriber:
 serviceInstance
-    .getNumbers()
-    .subscribe((no: number) => console.log('#sub1', no));
+  .getNumbers()
+  .subscribe((no: number) => console.log("#sub1", no));
 
 // #2 Subscriber:
 serviceInstance
-    .getNumbers()
-    .subscribe((no: number) => console.log('#sub2', no));
+  .getNumbers()
+  .subscribe((no: number) => console.log("#sub2", no));
 
 // #3 Subscriber:
 serviceInstance
-    .getNumbers()
-    .subscribe((no: number) => console.log('#sub3', no));
+  .getNumbers()
+  .subscribe((no: number) => console.log("#sub3", no));
 
-(function deepDownInTheOceanOfModules(){
-
-    // co się stanie jeśli odkomentujemy linię poniżej
-    // timer(4000).pipe(mapTo('TROLL')).subscribe(serviceInstance.getNumbers())
-}());
-
-
+(function deepDownInTheOceanOfModules() {
+  // co się stanie jeśli odkomentujemy linię poniżej
+  // timer(4000).pipe(mapTo('TROLL')).subscribe(serviceInstance.getNumbers())
+})();
 
 export {};
