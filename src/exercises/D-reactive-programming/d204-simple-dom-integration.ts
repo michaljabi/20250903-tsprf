@@ -1,4 +1,4 @@
-import { fromEvent, map, scan, startWith } from "rxjs";
+import { fromEvent, map, scan, startWith, tap } from "rxjs";
 import { $ } from "../../dom-api/selector";
 import { sum } from "../B-functional-programming/number.helpers";
 
@@ -15,9 +15,15 @@ import { sum } from "../B-functional-programming/number.helpers";
 const h2Counter = $("#counter");
 
 const number$ = fromEvent(document, "click").pipe(
+  tap((v) => {
+    console.log("value", v);
+  }),
   map((_) => 1),
+  tap((v) => {
+    console.log("mapped value", v);
+  }),
   startWith(100),
-  scan(sum),
+  scan(sum)
 );
 
 number$.subscribe((num) => {
