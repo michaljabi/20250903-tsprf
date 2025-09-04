@@ -1,4 +1,3 @@
-
 /**
  #Zadanie:
  Poznaj / przypomnij sobie możliwości dzięki wykorzystaniu API dla tablic
@@ -13,42 +12,52 @@
  */
 
 // Iteracja elementów
-[1,2,3,4,5].forEach((element: number) => {
- console.log(element);
+[1, 2, 3, 4, 5].forEach((element: number) => {
+  console.log(element);
 });
 
 // Mapowanie
 // Transformacja elementów
-const mapped = [1,2,3,4,5].map((nr: number) => 'Chapter #'+nr);
+const mapped = [1, 2, 3, 4, 5].map((nr: number) => "Chapter #" + nr);
 console.log(mapped);
 
 // Filtrowanie
 // Zmiana ilości elementów
-const oddNumbers = [1,2,3,4,5].filter((nr: number) => (nr%2));
+const oddNumbers = [1, 2, 3, 4, 5].filter((nr: number) => nr % 2);
 console.log(oddNumbers);
 
 // Sprawdzenie warunku
 // Każdy element spełnia predykat
-const allLowerThan10 = [1,2,3,4,5].every((nr: number) => nr < 10);
+const allLowerThan10 = [1, 2, 3, 4, 5].every((nr: number) => nr < 10);
 console.log(allLowerThan10);
 
 // "Redukcja" elementów
 // Gdzie map i filter nie może tam reduce pośle!
-const sumOfElements = [1,2,3,4,5].reduce((acc: number, value: number) => acc + value);
+const sumOfElements = [1, 2, 3, 4, 5].reduce((acc: number, value: number) => {
+  console.log(acc);
+  return acc + value;
+}, 0);
 console.log(sumOfElements);
+
+[].reduce((acc: number, value: number) => {
+  console.log(acc);
+  return acc + value;
+}, 0); //=
+
+[1, 2, 3, 4, 5].reduce((acc: number, value: number) => {
+  console.log(acc);
+  return acc + value;
+}, 100); //=
+
 
 // Mapowanie a potem spłaszczenie tablicy
 const elements = [1, 2, 3];
-console.log(elements.flatMap((e: number) => [e, e ** 2]))
-console.log(elements.map((e: number) => [e, e ** 2]).flat())
+console.log(elements.flatMap((e: number) => [e, e ** 2]));
+console.log(elements.map((e: number) => [e, e ** 2]).flat());
 
-export {}
+export {};
 
-
-
-
-
-const numbers = [1,2,3,4,5];
+const numbers = [1, 2, 3, 4, 5];
 const numbersBy2 = numbers.map((nr: number) => nr * 2);
 
-console.log(numbersBy2)
+console.log(numbersBy2);
