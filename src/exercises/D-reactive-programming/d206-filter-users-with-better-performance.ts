@@ -1,4 +1,15 @@
-import { from, fromEvent, map, of, filter, tap, startWith } from "rxjs";
+import {
+  from,
+  fromEvent,
+  map,
+  of,
+  filter,
+  tap,
+  startWith,
+  Observable,
+  mergeMap,
+  mergeAll,
+} from "rxjs";
 import { li } from "../../dom-api/make-dom";
 import { $ } from "../../dom-api/selector";
 
@@ -68,17 +79,36 @@ inputText$
     startWith(""),
     tap(() => {
       userList.innerHTML = "";
-    })
-  )
-  .subscribe((text) => {
-    user$
-      .pipe(
+    }),
+    mergeMap((text: string) =>
+      user$.pipe(
         filter((u) => u.profession.toLowerCase().startsWith(text.toLowerCase()))
       )
-      .subscribe((user) => {
-        userList.append(makeLi(user));
-      });
+    )
+    /*
+    map((text: string) =>
+      user$.pipe(
+        filter((u) => u.profession.toLowerCase().startsWith(text.toLowerCase()))
+      )
+    ),
+    mergeAll(),
+    */
+    // flatAll()
+  )
+  .subscribe((user: Professional) => {
+    userList.append(makeLi(user));
   });
+/*
+  .subscribe((user$$: Observable<Professional>) => {
+    user$$.subscribe((user) => {
+      userList.append(makeLi(user));
+    });
+  });
+  */
+
+// ------[]-------[]-------[]---->
+//       |
+// ------[[],[],[]]
 
 // inputFilter.addEventListener("input", (ev) => {
 //   if (ev.target instanceof HTMLInputElement) {
