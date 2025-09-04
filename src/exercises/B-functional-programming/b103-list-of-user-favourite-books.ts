@@ -1,3 +1,4 @@
+import { pluck } from "ramda";
 import { from } from "rxjs";
 
 import { mergeMap, map } from "rxjs/operators";
@@ -13,9 +14,19 @@ import { mergeMap, map } from "rxjs/operators";
  */
 
 // >! Przygotuj model danych w TS:
+interface User {
+  name: string;
+  age: number;
+  books: Book[];
+}
+
+interface Book {
+  name: string;
+  quote: string;
+}
 
 // fake API z danymi:
-const api = {
+const api: { users: User[] } = {
   users: [
     {
       name: "Michał",
@@ -58,15 +69,20 @@ const api = {
 
 // Rozwiązanie:
 // const quotes = api.users.map(u => u.books).flat();
-const quotes = api.users.flatMap((u) => u.books).map((b) => b.quote);
+const quotes = api.users
+  .flatMap((u: User) => u.books)
+  .map((b: Book) => b.quote);
 
 console.log(quotes);
 
 // 2. po rozwiązaniu funkcyjnym 🙋 -> i spróbuj zrobić z tego strumień + operatory w .pipe()
 
+const pluckBooks = () => mergeMap((u: User): Book[] => u.books);
+const pluckQuotes = () => map((b: Book): Book['quote'] => b.quote);
+
 const quote$ = from(api.users).pipe(
-  mergeMap((u) => u.books),
-  map((b) => b.quote)
+  pluckBooks(),
+  pluckQuotes()
 );
 
 // quote$.subscribe((u) => {
