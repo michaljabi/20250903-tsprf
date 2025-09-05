@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SłowoTok</title>
+  </head>
+  <body>
+  <header class="p-5 mb-4 bg-dark text-light rounded-0 text-center">
+    <h1>Słowo-Tok</h1>
+  </header>
+  <main class="container">
+    <div class="row my-2">
+      <div class="col-6">
+        <!-- ALL WORDS COUNTER CARD COMPONENT: -->
+        <div class="card bg-dark text-light">
+          <div class="card-header">
+            🧮 Wszystkich słów
+          </div>
+          <div class="card-body text-center">
+            <div style="font-size: 8em" id="all-words-counter"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <!-- LONGEST WORD CARD COMPONENT: -->
+        <div class="card bg-dark text-light">
+          <div class="card-header">
+            🧵 Najdłuższe słowo
+          </div>
+          <div class="card-body text-center">
+            <div style="font-size: 5em" id="longest-word-length"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <!-- LIST OF WORDS + INPUT COMPONENT: -->
+        <div class="card bg-dark text-light">
+          <div class="card-header bg-primary">
+            📝 Nowe słowa
+          </div>
+          <div class="card-body">
+            <!-- (input) -->
+            <div class="input-group mb-3">
+              <input id="new-word" type="text" class="form-control" placeholder="Wpisz słowo" aria-label="Nowe słowo">
+            </div>
+          </div>
+          <!-- (list) -->
+          <ul class="list-group list-group-flush" id="all-words">
+          </ul>
+        </div>
+      </div>
+      <div class="col-6">
+        <!-- "A" - WORDS CARD COMPONENT: -->
+        <div class="card bg-dark text-light">
+          <div class="card-header">
+            🔠 Słowa na literę "a"
+          </div>
+          <ul class="list-group list-group-flush" id="words-start-with-a">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
