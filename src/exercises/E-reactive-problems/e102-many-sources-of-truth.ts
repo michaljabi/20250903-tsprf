@@ -1,11 +1,12 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, timer } from "rxjs";
+import { map, mapTo } from "rxjs/operators";
 
 class SimpleService {
   private number$: BehaviorSubject<number>;
 
   // spoiler o co chodzi przed rozwiązaniem e102.
   // dla przykładu Array
-  private  myData: number[] = [];
+  private myData: number[] = [];
 
   constructor() {
     this.number$ = new BehaviorSubject(1);
@@ -15,7 +16,7 @@ class SimpleService {
   }
 
   getNumbers() {
-    return this.number$;
+    return this.number$.asObservable();
   }
 
   getData(): readonly number[] {
@@ -58,7 +59,35 @@ serviceInstance
 
 (function deepDownInTheOceanOfModules() {
   // co się stanie jeśli odkomentujemy linię poniżej
-  // timer(4000).pipe(mapTo('TROLL')).subscribe(serviceInstance.getNumbers())
+  timer(4000)
+    .pipe(map((_) => 999))
+    .subscribe(serviceInstance.getNumbers());
+
+
+  // co się tam dziej
+  // -----4000ms-(999)|->
+
+  setTimeout(() => {
+    serviceInstance.getNumbers().next(999);
+    serviceInstance.getNumbers().complete();
+  }, 4000)
+
+  timer(4000)
+    .pipe(map((_) => 999))
+    .subscribe(() => {});
+  timer(4000)
+    .pipe(map((_) => 999))
+    .subscribe({
+      next(v) {},
+      error(e) {},
+      complete() {},
+    });
+
+  setTimeout(() => {
+    serviceInstance.getNumbers().subscribe((v) => {
+      console.log(v);
+    });
+  }, 5000);
 })();
 
 export {};
