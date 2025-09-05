@@ -7,6 +7,8 @@ import {
   take,
   switchMap,
   merge,
+  share,
+  shareReplay,
 } from "rxjs";
 
 import { $ } from "../../dom-api/selector";
@@ -37,8 +39,10 @@ const h6Result2 = $("h6#result2");
 
 // Strumień
 const second$ = interval(1000).pipe(
-  take(20),
-  map((n) => n + 1)
+  take(5),
+  map((n) => n + 1),
+  // share() // jak skończę to rozpoczynam od nowa (jeśli pojawi się nowy subskrybent)
+  shareReplay() // jak skończę to już nie ma emisji (jeśli pojawi się nowy subskrybent)
 );
 
 // Rozwiązanie:
