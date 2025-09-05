@@ -1,7 +1,7 @@
-import { interval, take } from 'rxjs'
+import { fromEvent, interval, map, take } from "rxjs";
 
-import { $ } from '../../dom-api/selector'
-  /**
+import { $ } from "../../dom-api/selector";
+/**
     #Zadanie:
     Zasubskrybuj się do strumienia sekund wykorzystując przygotowane przyciski.
     Po przyciśnięciu przycisku sub1StartBtn - startujemy subskrypcję 1
@@ -20,16 +20,30 @@ import { $ } from '../../dom-api/selector'
     Utrwalenie fromEvent, używanie operatora switchMap (unikanie zagnieżdżania subskrypcji)
   */
 
-  // Pomocnicze selektory DOM:
-  const btn1 = $('button#btn1');
-  const btn2 = $('button#btn2');
-  const h6Result1 = $('h6#result1');
-  const h6Result2 = $('h6#result2');
+// Pomocnicze selektory DOM:
+const btn1 = $("button#btn1");
+const btn2 = $("button#btn2");
+const h6Result1 = $("h6#result1");
+const h6Result2 = $("h6#result2");
 
-  // Strumień
-  const second$ = interval(1000).pipe( take(20) );
+// Strumień
+const second$ = interval(1000).pipe(
+  take(20),
+  map((n) => n + 1)
+);
 
-  // Rozwiązanie:
+// Rozwiązanie:
+const btn1Click$ = fromEvent(btn1, "click");
+const btn2Click$ = fromEvent(btn2, "click");
 
+btn1Click$.subscribe(() => {
+  second$.subscribe((num) => {
+    h6Result1.textContent = String(num);
+  });
+});
 
-
+btn2Click$.subscribe(() => {
+  second$.subscribe((num) => {
+    h6Result2.textContent = String(num);
+  });
+});
