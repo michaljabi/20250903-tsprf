@@ -1,7 +1,16 @@
-import { delay, fromEvent, Subscription } from "rxjs";
+import {
+  delay,
+  from,
+  fromEvent,
+  map,
+  mergeMap,
+  Subscription,
+  switchMap,
+} from "rxjs";
 import { button, li, ul } from "../../dom-api/make-dom";
 import { $ } from "../../dom-api/selector";
 import { ajax } from "rxjs/ajax";
+import { tap } from "ramda";
 
 /**
  #Zadanie:
@@ -37,6 +46,7 @@ const user$ = ajax.getJSON<AjaxUser[]>(
   "https://jsonplaceholder.typicode.com/users"
 );
 
+/*
 let sub: Subscription;
 
 btnClick$.subscribe(() => {
@@ -47,6 +57,22 @@ btnClick$.subscribe(() => {
     myUlList.append(...result.map(mapUserToLi));
   });
 });
+*/
+
+btnClick$
+  .pipe(
+    switchMap(() => user$.pipe(delay(1000))),
+    tap(() => {
+      myUlList.innerHTML = "";
+    }),
+    mergeMap((users) => {
+      console.log(users);
+      return from(users);
+    })
+  )
+  .subscribe((user) => {
+    myUlList.append(mapUserToLi(user));
+  });
 
 // HTML Boilerplate:
 const buttonWrapperDOM = $("#buttonWrapper") as HTMLDivElement;
