@@ -1,6 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { AlbumListService } from './album-list.service';
 import { Album } from './album';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -12,17 +13,27 @@ import { Album } from './album';
     </div>
   `,
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
+
   albumListService = inject(AlbumListService);
 
   // Zadanie: spraw, aby ten sygnał wyświetlał poprawną wartość.
   numberOfAlbums = signal(0);
 
+  private subscription?: Subscription;
+
   ngOnInit(): void {
     
-    this.albumListService.searchAlbum$().subscribe((albums) => {
-      this.numberOfAlbums.set(albums.length);
-    })
+    // nie robie tych obliczeń w komponencie - to serwis mi je ma dostarczyć !
+    // this.albumListService.searchAlbum$().subscribe((albums) => {
+    //   this.numberOfAlbums.set(albums.length);
+    // })
+
+    this.subscription = this.albumListService.numberOfSearchedAlbum$().subscribe(n => this.numberOfAlbums.set(n))
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe()
   }
 
   search(event: Event) {
