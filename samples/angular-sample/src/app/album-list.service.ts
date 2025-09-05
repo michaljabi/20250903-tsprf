@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import {map, Subject, switchMap} from "rxjs";
+import {map, Observable, Subject, switchMap} from "rxjs";
 import { Album } from "./album";
 
 
@@ -20,7 +20,7 @@ export class AlbumListService{
         this.inputText.next(text);
     }
 
-    searchAlbum$() {
+    searchAlbum$(): Observable<Album[]> {
         return this.inputText.pipe(
             switchMap((text) =>
                 this.getAlbums()

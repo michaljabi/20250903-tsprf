@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, signal} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {AlbumListService} from "./album-list.service";
 import {Album} from "./album";
 
