@@ -1,4 +1,13 @@
-import { fromEvent, interval, map, take } from "rxjs";
+import {
+  fromEvent,
+  interval,
+  map,
+  mergeMap,
+  Subscription,
+  take,
+  switchMap,
+  merge,
+} from "rxjs";
 
 import { $ } from "../../dom-api/selector";
 /**
@@ -36,14 +45,25 @@ const second$ = interval(1000).pipe(
 const btn1Click$ = fromEvent(btn1, "click");
 const btn2Click$ = fromEvent(btn2, "click");
 
+// Proper logic - ale mamy tutaj subskrypcję w subskrypcji 😭
+let mySub: Subscription;
+
 btn1Click$.subscribe(() => {
-  second$.subscribe((num) => {
+  mySub?.unsubscribe();
+  mySub = second$.subscribe((num) => {
     h6Result1.textContent = String(num);
   });
 });
 
-btn2Click$.subscribe(() => {
-  second$.subscribe((num) => {
-    h6Result2.textContent = String(num);
-  });
+// Użycie operatora:
+// Rozwiązujemy problem z zagnieżdzeniem subów +1
+// ale.... dalej w rezultacie multisuby na h6Result2 😭
+/*
+btn2Click$.pipe(mergeMap(() => second$)).subscribe((num) => {
+  h6Result2.textContent = String(num);
+});
+*/
+// dlatego rozwiązaniem będzie `switchMap`
+btn2Click$.pipe(switchMap(() => second$)).subscribe((num) => {
+  h6Result2.textContent = String(num);
 });
