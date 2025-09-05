@@ -1,6 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, Subject, switchMap, share, BehaviorSubject } from 'rxjs';
+import {
+  map,
+  Observable,
+  distinctUntilChanged,
+  switchMap,
+  share,
+  BehaviorSubject,
+  debounceTime,
+} from 'rxjs';
 import { Album } from './album';
 
 @Injectable({
@@ -26,6 +34,8 @@ export class AlbumListService {
 
   searchAlbum$(): Observable<Album[]> {
     return this.inputText.pipe(
+      debounceTime(500), // poczekaj aż po 500ms przestanie pisać
+      distinctUntilChanged((prevText, text) => prevText.toLowerCase() === text.toLowerCase()), // jeśli szuka tego samego co poprzednio to nie puszczaj dalej
       switchMap((text) =>
         this.album$.pipe(
           map((albums) =>
