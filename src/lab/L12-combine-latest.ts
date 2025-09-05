@@ -1,4 +1,4 @@
-import { timer, combineLatest } from "rxjs";
+import { timer, combineLatest, zip } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 
 // timerOne emits first value at 1s
@@ -20,11 +20,12 @@ const timerThree$ = timer(3000).pipe(
 // when one timer emits, emit the latest values from each timer as an array
 combineLatest([timerOne$, timerTwo$, timerThree$]).subscribe(
   ([timerValOne, timerValTwo, timerValThree]) => {
-    // console.log(
-    //   `Timer One Latest: ${timerValOne},
-    //  Timer Two Latest: ${timerValTwo},
-    //  Timer Three Latest: ${timerValThree}`
-    // );
+    console.log(`${timerValOne}-${timerValTwo}-${timerValThree}`);
+  }
+);
+
+zip([timerOne$, timerTwo$, timerThree$]).subscribe(
+  ([timerValOne, timerValTwo, timerValThree]) => {
     console.log(`${timerValOne}-${timerValTwo}-${timerValThree}`);
   }
 );
