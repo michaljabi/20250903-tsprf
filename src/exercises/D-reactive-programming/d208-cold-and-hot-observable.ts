@@ -42,7 +42,7 @@ const second$ = interval(1000).pipe(
   take(5),
   map((n) => n + 1),
   // share() // jak skończę to rozpoczynam od nowa (jeśli pojawi się nowy subskrybent)
-  shareReplay() // jak skończę to już nie ma emisji (jeśli pojawi się nowy subskrybent)
+  shareReplay(1) // jak skończę to już nie ma emisji (jeśli pojawi się nowy subskrybent)
 );
 
 // Rozwiązanie:
@@ -70,4 +70,5 @@ btn2Click$.pipe(mergeMap(() => second$)).subscribe((num) => {
 // dlatego rozwiązaniem będzie `switchMap`
 btn2Click$.pipe(switchMap(() => second$)).subscribe((num) => {
   h6Result2.textContent = String(num);
+  console.log(num);
 });
