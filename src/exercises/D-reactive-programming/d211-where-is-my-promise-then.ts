@@ -1,6 +1,7 @@
-import { button, li, ul } from '../../dom-api/make-dom'
-import { $ } from '../../dom-api/selector'
-import { ajax } from 'rxjs/ajax'
+import { delay, fromEvent, Subscription } from "rxjs";
+import { button, li, ul } from "../../dom-api/make-dom";
+import { $ } from "../../dom-api/selector";
+import { ajax } from "rxjs/ajax";
 
 /**
  #Zadanie:
@@ -19,25 +20,39 @@ import { ajax } from 'rxjs/ajax'
  Operatory: switchMap, map, from - utrwalenie
  */
 interface AjaxUser {
-    name: string;
-    email: string;
+  name: string;
+  email: string;
 }
 
 // Pomocnicze wrapper'y DOM:
-const loadUsersBtn = button('Załaduj użytkowników', ['btn','btn-primary']);
-const myUlList = ul([ ], ['list-group', 'text-dark']);
+const loadUsersBtn = button("Załaduj użytkowników", ["btn", "btn-primary"]);
+const myUlList = ul([], ["list-group", "text-dark"]);
 const mapUserToLi = (user: AjaxUser) => li(`${user.name} (${user.email})`);
-
 
 // Rozwiązanie:
 
+const btnClick$ = fromEvent(loadUsersBtn, "click");
+
+const user$ = ajax.getJSON<AjaxUser[]>(
+  "https://jsonplaceholder.typicode.com/users"
+);
+
+let sub: Subscription;
+
+btnClick$.subscribe(() => {
+  sub?.unsubscribe();
+  sub = user$.pipe(delay(1000)).subscribe((result) => {
+    console.log(result);
+    myUlList.innerHTML = "";
+    myUlList.append(...result.map(mapUserToLi));
+  });
+});
 
 // HTML Boilerplate:
-const buttonWrapperDOM = $('#buttonWrapper') as HTMLDivElement;
-const usersWrapperDOM = $('#usersWrapper') as HTMLDivElement;
+const buttonWrapperDOM = $("#buttonWrapper") as HTMLDivElement;
+const usersWrapperDOM = $("#usersWrapper") as HTMLDivElement;
 
-buttonWrapperDOM.appendChild(loadUsersBtn)
-usersWrapperDOM.appendChild(myUlList)
+buttonWrapperDOM.appendChild(loadUsersBtn);
+usersWrapperDOM.appendChild(myUlList);
 
-
-export {}
+export {};
